@@ -1,0 +1,163 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Mailing API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/companies/list": {
+            "get": {
+                "tags": [
+                    "API INTERNAL"
+                ],
+                "summary": "Listagem de empresas",
+                "description": "Endpoint to list registered companies.",
+                "operationId": "ed155dab8a863c7cd25dfb9e92f7e00d",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Busca por nome da empresa",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Listagem de empresas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "active": {
+                                                "type": "boolean"
+                                            },
+                                            "cnpj": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/mailing/create": {
+            "post": {
+                "tags": [
+                    "API PUBLIC"
+                ],
+                "summary": "Endpoint público para envio de carga de mailing",
+                "description": "Endpoint to create a new mailing.",
+                "operationId": "9ae5f9e9cbc0e507785361a12c43c790",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "description": {
+                                        "description": "A brief description of the mailing.",
+                                        "type": "string"
+                                    },
+                                    "data": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "cod": {
+                                                    "type": "integer",
+                                                    "example": 111
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "AAAAAA"
+                                                },
+                                                "phones": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "111111111"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Envio de e-mail criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autenticado"
+                    },
+                    "422": {
+                        "description": "Dados inválidos"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "Enter your Bearer token below:",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "API INTERNAL",
+            "description": "API INTERNAL"
+        },
+        {
+            "name": "API PUBLIC",
+            "description": "API PUBLIC"
+        }
+    ]
+}
